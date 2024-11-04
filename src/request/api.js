@@ -52,10 +52,19 @@ export function selectByName(data) {
     });
 }
 
-// 根据关键词搜索
+// 根据关键词搜索接口函数
 export function searchByKey(data) {
     return service({
         url: "/start/gUser/search",
+        method: "POST",
+        data
+    });
+}
+
+// 限制用户访问量接口函数
+export function limitLoad(data) {
+    return service({
+        url: "/start/data/loadUser",
         method: "POST",
         data
     });
