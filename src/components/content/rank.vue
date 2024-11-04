@@ -13,20 +13,18 @@
       <el-descriptions-item label="Github" width="150px">{{item.html_url}}</el-descriptions-item>
       <el-descriptions-item label="Level" width="100px">{{item.level}}</el-descriptions-item>
       <el-descriptions-item label="Nation" >
-<!--        <el-button v-if="item.location===null" @click="predictByNull(index)">-->
-<!--          预测-->
-<!--          <div class="nation" v-if="this.predArray[this.scriptMap.get(index)].preNation!=='N/A'">-->
-<!--            (预测值: {{ this.predArray[this.scriptMap.get(index)].preNation }})-->
-<!--          </div>-->
-<!--          <div class="nation" v-else>-->
-<!--            <span>当前数据量不足，预测可信度不高</span>-->
-<!--          </div>-->
-<!--        </el-button>-->
-<!--        <div v-else>{{item.location}}</div>-->
         <div v-if="item.location!==null">{{item.location}}</div>
         <el-button v-else @click="predictByNull(index)">
           预测
         </el-button>
+        <el-dialog v-if="ShowDialog" class="predDialog" :before-close="handleClose">
+          <div class="Text">
+            <pre>
+              {{this.predNation}}
+            </pre>
+          </div>
+
+        </el-dialog>
       </el-descriptions-item>
       <el-descriptions-item label="Field" width="100px">{{item.topic}}</el-descriptions-item>
     </el-descriptions>
@@ -36,6 +34,20 @@
         this is a hat
     </el-card>
   </div>
+<!--  <el-descriptions class="descriptionTest" border >-->
+<!--    <el-descriptions-item label="Nation" >-->
+<!--      <el-button @click="predictByNullTest">-->
+<!--        预测-->
+<!--      </el-button>-->
+<!--      <el-dialog v-model="ShowDialog" class="predDialogTest" :before-close="handleClose">-->
+<!--        <div class="testText">-->
+<!--          <pre>-->
+<!--            {{this.testNation}}-->
+<!--          </pre>-->
+<!--        </div>-->
+<!--      </el-dialog>-->
+<!--    </el-descriptions-item>-->
+<!--  </el-descriptions>-->
 </template>  
   
 <script >
@@ -53,6 +65,9 @@ export default {
         page: 1,
         size: 10
       },
+      // 是否显示对话框
+      ShowDialog:false,
+      predNation:"",
       // 存储请求的数据
       descriptionsConfigs: [],
       // 存储得分与等级的转换
@@ -64,11 +79,13 @@ export default {
       },
       // 是否显示按钮
       IsPredicted: true,
-      // 存储location为null的login与i进行预测
-      predArray: [],
       preName:{
        login:''
       },
+      test:{
+        login: 'jmalarcon'
+      },
+      testNation:'',
       preRes:false
       // 内容标签对齐
     };
@@ -116,12 +133,14 @@ export default {
       predictByName(this.preName).then(res => {
         if (res.code === 200) {
               if (res.data.userLocations!=='N/A'){
-                ElMessageBox.alert(res.data.userLocations, '预测', {
-                  confirmButtonText: '确定',
-                  callback: action => {
-                    console.log(action);
-                  }
-                });
+                this.predNation=res.data.userLocations
+                this.ShowDialog=true
+                // ElMessageBox.alert(res.data.userLocations, '预测', {
+                //   confirmButtonText: '确定',
+                //   callback: action => {
+                //     console.log(action);
+                //   }
+                // });
               }
               else{
                 ElMessageBox.alert("当前数据量不足，预测可信度不高", '预测', {
@@ -142,6 +161,40 @@ export default {
       // console.log(this.params)
       // console.log("更新------------")
       this.getInfo()
+    },
+    predictByNullTest(){
+      console.log(1)
+      predictByName(this.test).then(res => {
+        if (res.code === 200) {
+          if (res.data.userLocations!=='N/A'){
+            this.testNation=res.data.userLocations
+            console.log(this.testNation)
+            this.ShowDialog=true
+            // ElMessageBox.alert(res.data.userLocations, '预测', {
+            //   confirmButtonText: '确定',
+            //   callback: action => {
+            //     console.log(action);
+            //   }
+            // });
+          }
+          else{
+            ElMessageBox.alert("当前数据量不足，预测可信度不高", '预测', {
+              confirmButtonText: '确定',
+              callback: action => {
+                console.log(action);
+              }
+            });
+          }
+          this.preRes=true
+        }
+      })
+    },
+    handleClose(done) {
+      this.$confirm('确认关闭？')
+          .then(_ => {
+            done();
+          })
+          .catch(_ => {});
     }
 
 
@@ -157,6 +210,13 @@ export default {
     .nation{
       display: inline;
     }
+    .predDialog{
+      .Text{
+        --el-dialog-width: 90%;
+        word-break: break-all;
+        word-wrap: break-word;
+      }
+    }
   }
 }
 .rules{
@@ -168,6 +228,13 @@ export default {
   .rules-card{
     height: 100%;
     width: 100%;
+  }
+}
+.descriptionTest{
+  .predDialogTest{
+    --el-dialog-width: 90%;
+    word-break: break-all;
+    word-wrap: break-word;
   }
 }
 
