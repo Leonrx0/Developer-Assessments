@@ -29,33 +29,24 @@
       <el-descriptions-item label="Field" width="100px">{{item.topic}}</el-descriptions-item>
     </el-descriptions>
   </div>
-  <div class="rules">
-    <el-card class="rules-card">
-        this is a hat
-    </el-card>
+  <div class="other-box">
+    <div class="rules">
+      <el-card class="rules-card">
+        this is hat
+<!--        <h2>技术排名:</h2>-->
+<!--        <h3>&nbsp;&nbsp;&nbsp;&nbsp;我们通过用户的score得分来进行用户排名</h3>-->
+<!--        <h3>&nbsp;&nbsp;&nbsp;&nbsp;bi</h3>-->
+      </el-card>
+    </div>
+    <div ref="chart" class="echarts" style="width: 400px; height: 400px;"></div>
   </div>
-<!--  <el-descriptions class="descriptionTest" border >-->
-<!--    <el-descriptions-item label="Nation" >-->
-<!--      <el-button @click="predictByNullTest">-->
-<!--        预测-->
-<!--      </el-button>-->
-<!--      <el-dialog v-model="ShowDialog" class="predDialogTest" :before-close="handleClose">-->
-<!--        <div class="testText">-->
-<!--          <pre>-->
-<!--            {{this.testNation}}-->
-<!--          </pre>-->
-<!--        </div>-->
-<!--      </el-dialog>-->
-<!--    </el-descriptions-item>-->
-<!--  </el-descriptions>-->
 </template>  
   
 <script >
 
 import {getRankList, predictByName,classifyLever} from '@/request/api'
 import { ElMessageBox } from 'element-plus'
-
-
+import * as echarts from 'echarts'
 export default {
   name: 'mRank',
   data() {
@@ -86,8 +77,14 @@ export default {
         login: 'jmalarcon'
       },
       testNation:'',
-      preRes:false
-      // 内容标签对齐
+      preRes:false,
+      // 饼状图分析
+      chart: null,
+      chartData: {
+        // 这里是你要绘制的饼图数据
+      }
+
+
     };
   },
   computed:{
@@ -95,6 +92,10 @@ export default {
   },
   mounted() {
     this.getInfo()
+    // 创建一个 ECharts 实例
+    this.chart = echarts.init(this.$refs.chart)
+    // 在 ECharts 实例中配置图表
+    this.chart.setOption(this.getOption())
   },
   methods: {
     // 获取数据并且存储
@@ -195,8 +196,56 @@ export default {
             done();
           })
           .catch(_ => {});
+    },
+    // 处理饼状图数据
+    getOption() {
+      return {
+        // 这里是你的 ECharts 配置项
+        title: {
+          text: '饼图标题',
+          subtext: '饼图副标题',
+          left: 'center'
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a} <br/>{b}: {c} ({d}%)'
+        },
+        legend: {
+          orient: 'vertical',
+          left: 10,
+          data: ['S', 'A', 'B', 'C', 'N/A']
+        },
+        series: [
+          {
+            name: '评级饼状图',
+            type: 'pie',
+            radius: ['50%', '70%'],
+            avoidLabelOverlap: false,
+            label: {
+              show: false,
+              position: 'center'
+            },
+            emphasis: {
+              label: {
+                show: true,
+                fontSize: '30',
+                fontWeight: 'bold'
+              }
+            },
+            labelLine: {
+              show: false
+            },
+            data: [
+              {value: 335, name: 'S'},
+              {value: 310, name: 'A'},
+              {value: 234, name: 'B'},
+              {value: 135, name: 'C'},
+              {value: 1548, name: 'N/A'}
+            ]
+          }
+        ]
+      }
     }
-
 
   }
 }
@@ -219,17 +268,25 @@ export default {
     }
   }
 }
-.rules{
-  display: flex;
-  margin-left: 100px;
-  margin-top: 30px;
-  height: 300px;
-  width: 400px;
-  .rules-card{
-    height: 100%;
-    width: 100%;
+.other-box{
+  margin-top: 20px;
+  .rules{
+    display: flex;
+    margin-left: 100px;
+    margin-top: 30px;
+    height: 300px;
+    width: 400px;
+    .rules-card{
+      height: 100%;
+      width: 100%;
+    }
+  }
+  .echarts{
+    margin-left: 100px;
+    margin-top: 50px;
   }
 }
+
 .descriptionTest{
   .predDialogTest{
     --el-dialog-width: 90%;
