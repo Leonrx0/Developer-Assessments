@@ -1,9 +1,9 @@
 <template>
-    <div class="container">
-      <el-card>
+    <div class="dBOX">
+      <div class="default">
         <div class="limit">
           <div class="limit-radios">
-            <el-radio-group v-model="radio" class="ml-4">
+            <el-radio-group v-model="radio">
               <el-radio label="1" size="large">50</el-radio>
               <el-radio label="2" size="large">100</el-radio>
               <el-radio label="3" size="large">200</el-radio>
@@ -27,9 +27,7 @@
           <h2>4.关键字搜索:</h2>
           <h3>&nbsp;&nbsp;&nbsp;&nbsp;我们可以通过一些关键字，如国家或者领域来显示满足要求的用户</h3>
         </div>
-
-      </el-card>
-
+      </div>
     </div>
 </template>
   
@@ -57,7 +55,7 @@ export default {
       limitLoad(this.params).then(res=>{
         if (res.code===200){
           ElMessage({
-            message: 'Congrats, this is a success message.',
+            message: '提交成功.',
             type: 'success',
           })
           // 一小时后重新启用
@@ -81,21 +79,28 @@ export default {
 </script>
   
 <style>
-.container{
-  margin-left:100px;
-  .limit{
-    display: flex;
-    .limit-radios{
+.dBOX{
+  height: 700px;
+  width: 600px;
+  margin-left: 20px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+  .default{
+    margin-left: 20px;
+    .limit{
+      height: 50px;
       display: flex;
+      .limit-radios{
+        display: flex;
+      }
+      .button{
+        margin-top: 10px;
+        margin-left: 30px;
+        display: flex;
+      }
     }
-    .button{
-      margin-top: 4px;
-      margin-left: 10px;
-      display: flex;
+    .content{
+      margin-top: 10px;
     }
-  }
-  .content{
-    margin-top: 10px;
   }
 }
 </style>

@@ -5,6 +5,7 @@ import Default from "@/components/content/default.vue";
 import login from "@/components/login.vue";
 import Select from "@/components/content/userSelect.vue"
 import Search from "@/components/content/search.vue";
+import Add from "@/components/content/add.vue";
 
 
 
@@ -34,6 +35,11 @@ const routes = [
                 path:'/select',
                 component:Select,
                 name:"mSelect",
+            },
+            {
+                path:'/add',
+                component:Add,
+                name:"mAdd",
             },
             {
                 path:'/search',

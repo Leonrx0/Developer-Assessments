@@ -69,3 +69,12 @@ export function limitLoad(data) {
         data
     });
 }
+
+// 添加用户接口函数
+export function addUser(data) {
+    return service({
+        url: "/start/gUser/add",
+        method: "POST",
+        data
+    });
+}
