@@ -32,10 +32,10 @@
   <div class="other-box">
     <div class="rules">
       <el-card class="rules-card">
-        this is hat
-<!--        <h2>技术排名:</h2>-->
-<!--        <h3>&nbsp;&nbsp;&nbsp;&nbsp;我们通过用户的score得分来进行用户排名</h3>-->
-<!--        <h3>&nbsp;&nbsp;&nbsp;&nbsp;bi</h3>-->
+        <h2>技术排名:</h2>
+        <h3>我们通过用户的score得分来进行用户排名</h3>
+        <h4>1.对用户的UserName，Nation，Field，Email，Github_url进行展示和介绍</h4>
+        <h4>2.预测结果，若返回结果为N/A，说明置信度不高，不可作为推断依据，如果置信度够高，那么将会返回预测的用户所在地，并给出推断理由</h4>
       </el-card>
     </div>
     <div ref="chart" class="echarts" style="width: 400px; height: 400px;"></div>
