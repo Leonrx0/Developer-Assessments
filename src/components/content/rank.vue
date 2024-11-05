@@ -38,7 +38,7 @@
         <h4>2.预测结果，若返回结果为N/A，说明置信度不高，不可作为推断依据，如果置信度够高，那么将会返回预测的用户所在地，并给出推断理由</h4>
       </el-card>
     </div>
-    <div ref="chart" class="echarts" style="width: 400px; height: 400px;"></div>
+    <div ref="chart" class="echart" style="width: 400px; height: 400px;"></div>
   </div>
 </template>  
   
@@ -281,7 +281,7 @@ export default {
       width: 100%;
     }
   }
-  .echarts{
+  .echart{
     margin-left: 100px;
     margin-top: 50px;
   }
