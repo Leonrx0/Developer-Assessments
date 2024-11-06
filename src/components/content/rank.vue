@@ -44,7 +44,7 @@
   
 <script >
 
-import {getRankList, predictByName,classifyLever} from '@/request/api'
+import {getRankList, predictByName, classifyLever, getEchartsData} from '@/request/api'
 import { ElMessageBox } from 'element-plus'
 import * as echarts from 'echarts'
 export default {
@@ -80,9 +80,12 @@ export default {
       preRes:false,
       // 饼状图分析
       chart: null,
+      levelName:['S', 'A', 'B', 'C', 'N/A'],
+      sNumList:[],
       chartData: {
         // 这里是你要绘制的饼图数据
-      }
+      },
+      chartsData:[]
 
 
     };
@@ -96,6 +99,38 @@ export default {
     this.chart = echarts.init(this.$refs.chart)
     // 在 ECharts 实例中配置图表
     this.chart.setOption(this.getOption())
+    // 获取各分段人数并更新
+    getEchartsData().then(res=>{
+      if (res.code===200){
+        console.log(res.data)
+        this.chartData=res.data
+      }
+      this.sNumList.push(this.chartData.sSize)
+      this.sNumList.push(this.chartData.aSize)
+      this.sNumList.push(this.chartData.bSize)
+      this.sNumList.push(this.chartData.cSize)
+      this.sNumList.push(this.chartData.dSize)
+      console.log(this.sNumList)
+      // 构建数据
+      for (let i=0;i<this.levelName.length;i++){
+        let newObj={
+          value:0,
+          name:''
+        }
+        newObj.value=this.sNumList[i]
+        newObj.name=this.levelName[i]
+        this.chartsData.push(newObj)
+      }
+      console.log(this.chartsData)
+
+
+      // 更新图表数据
+      this.chart.setOption({
+        series: [{
+          data: this.chartsData
+        }]
+      });
+    })
   },
   methods: {
     // 获取数据并且存储
@@ -236,11 +271,11 @@ export default {
               show: false
             },
             data: [
-              {value: 335, name: 'S'},
-              {value: 310, name: 'A'},
-              {value: 234, name: 'B'},
-              {value: 135, name: 'C'},
-              {value: 1548, name: 'N/A'}
+              {value: 1312, name: 'S'},
+              {value: 55, name: 'A'},
+              {value: 54, name: 'B'},
+              {value: 555, name: 'C'},
+              {value: 111, name: 'N/A'}
             ]
           }
         ]

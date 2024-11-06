@@ -78,3 +78,12 @@ export function addUser(data) {
         data
     });
 }
+
+// 饼状图数据接口
+export function getEchartsData(data) {
+    return service({
+        url: "/start/gUser/getGradeCount",
+        method: "POST",
+        data
+    });
+}
