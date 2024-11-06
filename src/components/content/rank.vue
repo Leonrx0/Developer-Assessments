@@ -7,7 +7,7 @@
         v-model:current-page="this.params.page"
         @current-change="handlePageChange"
     />
-    <el-descriptions class="description" border v-for="(item,index) in descriptionsConfigs[this.params.page-1]" :key="index" :title="'No.'+(index+1)*(this.params)" >
+    <el-descriptions class="description" border v-for="(item,index) in descriptionsConfigs[this.params.page-1]" :key="index" :title="'No.'+(index+1)*(this.params.page)" >
       <el-descriptions-item label="UserName" width="100px">{{item.name}}</el-descriptions-item>
       <el-descriptions-item label="EMail" width="150px">{{item.email}}</el-descriptions-item>
       <el-descriptions-item label="Github" width="150px">{{item.html_url}}</el-descriptions-item>
@@ -304,7 +304,9 @@ export default {
   }
 }
 .other-box{
+  position: fixed;
   margin-top: 20px;
+  margin-left: 1000px;
   .rules{
     display: flex;
     margin-left: 100px;

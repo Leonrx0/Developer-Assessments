@@ -2,6 +2,7 @@
     <div class="dBOX">
       <div class="default">
         <div class="limit">
+          <div class="limit-title">获取数据:</div>
           <div class="limit-radios">
             <el-radio-group v-model="radio">
               <el-radio label="1" size="large">50</el-radio>
@@ -80,15 +81,22 @@ export default {
   
 <style>
 .dBOX{
-  height: 700px;
-  width: 600px;
-  margin-left: 20px;
+  height: 600px;
+  width: 900px;
+  margin-left: 120px;
+  margin-top: 50px;
   box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
   .default{
     margin-left: 20px;
     .limit{
       height: 50px;
       display: flex;
+      .limit-title{
+        margin-left: 10px;
+        margin-top: 12px;
+        margin-right: 10px;
+        display: block;
+      }
       .limit-radios{
         display: flex;
       }

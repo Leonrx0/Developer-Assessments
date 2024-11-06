@@ -142,7 +142,7 @@ export default {
 //  通过层次堆叠来进行背景毛玻璃效果
 .back{
   height: 100vh; /* 使用视口高度，确保全屏覆盖 */
-  width: 100vw; /* 使用视口宽度，确保全屏覆盖 */
+  //width: 100%; /* 使用视口宽度，确保全屏覆盖 */
   display: flex;
   justify-content: center; /* 水平居中 */
   align-items: center; /* 垂直居中 */
