@@ -7,12 +7,12 @@
         v-model:current-page="this.params.page"
         @current-change="handlePageChange"
     />
-    <el-descriptions class="description" border v-for="(item,index) in descriptionsConfigs[this.params.page-1]" :key="index" :title="'No.'+(index+1)*(this.params.page)" >
-      <el-descriptions-item label="UserName" width="100px">{{item.name}}</el-descriptions-item>
-      <el-descriptions-item label="EMail" width="150px">{{item.email}}</el-descriptions-item>
-      <el-descriptions-item label="Github" width="150px">{{item.html_url}}</el-descriptions-item>
-      <el-descriptions-item label="Level" width="100px">{{item.level}}</el-descriptions-item>
-      <el-descriptions-item label="Nation" >
+    <el-descriptions class="description" direction="vertical" border v-for="(item,index) in descriptionsConfigs[this.params.page-1]" :key="index" :title="'No.'+(this.params.size*(this.params.page-1)+index+1)" >
+      <el-descriptions-item label="UserName" width="250px">{{item.name}}</el-descriptions-item>
+      <el-descriptions-item label="EMail" width="250px">{{item.email}}</el-descriptions-item>
+      <el-descriptions-item label="Github" width="250px">{{item.html_url}}</el-descriptions-item>
+      <el-descriptions-item label="Level" width="250px">{{item.level}}</el-descriptions-item>
+      <el-descriptions-item label="Nation" width="250px">
         <div v-if="item.location!==null">{{item.location}}</div>
         <el-button v-else @click="predictByNull(index)">
           预测
@@ -26,7 +26,7 @@
 
         </el-dialog>
       </el-descriptions-item>
-      <el-descriptions-item label="Field" width="100px">{{item.topic}}</el-descriptions-item>
+      <el-descriptions-item label="Field" width="250px">{{item.topic}}</el-descriptions-item>
     </el-descriptions>
   </div>
   <div class="other-box">
