@@ -7,7 +7,7 @@
         v-model:current-page="this.params.page"
         @current-change="handlePageChange"
     />
-    <el-descriptions class="description" border v-for="(item,index) in descriptionsConfigs[this.params.page-1]" :key="index" :title="'No.'+(index+1)" >
+    <el-descriptions class="description" border v-for="(item,index) in descriptionsConfigs[this.params.page-1]" :key="index" :title="'No.'+(index+1)*(this.params)" >
       <el-descriptions-item label="UserName" width="100px">{{item.name}}</el-descriptions-item>
       <el-descriptions-item label="EMail" width="150px">{{item.email}}</el-descriptions-item>
       <el-descriptions-item label="Github" width="150px">{{item.html_url}}</el-descriptions-item>
@@ -237,8 +237,8 @@ export default {
       return {
         // 这里是你的 ECharts 配置项
         title: {
-          text: '饼图标题',
-          subtext: '饼图副标题',
+          text: 'Github数据分析',
+          subtext: '各分段人数饼状图',
           left: 'center'
         },
         tooltip: {
