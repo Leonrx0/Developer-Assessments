@@ -2,7 +2,7 @@
   <div class="container">
       <div  class="card">
         <div class="card-input">
-          <el-input v-model="params.login"  placeholder="Please input username" class="input"/>
+          <el-input v-model="params.login"  placeholder="Please input user's login" class="input"/>
           <div class="button">
             <el-button @click="predictByInput" >搜索</el-button>
           </div>
@@ -89,13 +89,12 @@ export default {
 <style>
 .container{
   width: 1000px;
-  height: 90%;
   .card{
     width: 100%;
     height: 100%;
     margin-left: 20px;
     padding: 0;
-    box-shadow: rgba(0, 0, 0, 0.16) 0 1px 4px;
+
     .card-input{
       display: flex;
       height: 60px;
@@ -115,7 +114,7 @@ export default {
       }
     }
     .card-content{
-      height: 90%;
+      height: 500px;
       font-size:14px ;
       color: black;
       font-family: "Arial", "Helvetica", sans-serif; /* 设置字体类型 */
