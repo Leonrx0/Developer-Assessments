@@ -1,7 +1,7 @@
 <template>
   <div class="sideBox">
     <el-container class="admin">
-      <el-aside style="min-height: 100vh;width: 170px;">
+      <el-aside style="min-height: 100vh;width: 170px;" class="aside">
         <el-menu :default-active="activeMenu" class="menu" router>
           <el-menu-item index="default">首页</el-menu-item>
           <!--            <el-sub-menu index="rank" v-if="technologyRank">-->
@@ -80,11 +80,14 @@
   <style>
   .sideBox{
     .admin{
+      .aside{
+        float: left;
+      }
+      .content{
+        margin-top: 70px;
+      }
+    }
 
-    }
-    .content{
-      margin-top: 70px;
-    }
 
   }
 

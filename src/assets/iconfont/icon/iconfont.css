@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4723574 */
-  src: url('//at.alicdn.com/t/c/font_4723574_lwvy8va1zrq.woff2?t=1730807521458') format('woff2'),
-  url('//at.alicdn.com/t/c/font_4723574_lwvy8va1zrq.woff?t=1730807521458') format('woff'),
-  url('//at.alicdn.com/t/c/font_4723574_lwvy8va1zrq.ttf?t=1730807521458') format('truetype');
+  src: url('//at.alicdn.com/t/c/font_4723574_fdcoorieims.woff2?t=1730909517211') format('woff2'),
+  url('//at.alicdn.com/t/c/font_4723574_fdcoorieims.woff?t=1730909517211') format('woff'),
+  url('//at.alicdn.com/t/c/font_4723574_fdcoorieims.ttf?t=1730909517211') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,30 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-A_square_solid_4472c4:before {
+  content: "\e638";
+  color: #0086b3;
+}
+
+.icon-S_square_solid:before {
+  content: "\e63b";
+  color: #0086b3;
+}
+
+.icon-C_square_solid:before {
+  content: "\e643";
+  color: #0086b3;
+}
+
+.icon-B_round_solid:before {
+  content: "\e645";
+  color: #0086b3;
+}
+
+.icon-999-weizhi:before {
+  content: "\e639";
 }
 
 .icon-shujuju:before {
@@ -32,4 +56,3 @@
 .icon-yonghu:before {
   content: "\e624";
 }
-

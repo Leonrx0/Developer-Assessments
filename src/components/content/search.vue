@@ -20,7 +20,7 @@
         <el-descriptions-item label="UserName" width="250px">{{item.name}}</el-descriptions-item>
         <el-descriptions-item label="EMail" width="250px">{{item.email}}</el-descriptions-item>
         <el-descriptions-item label="Github" width="250px">{{item.html_url}}</el-descriptions-item>
-        <el-descriptions-item label="Level" width="250px">{{item.level}}</el-descriptions-item>
+        <el-descriptions-item label="Level" width="250px"><i :class="this.iconLevel" style="font-size: 30px"></i></el-descriptions-item>
         <el-descriptions-item label="Nation" width="250px">
           <div v-if="item.location!==null">{{item.location}}</div>
           <el-button v-else @click="predictByNull(index)">
@@ -57,6 +57,8 @@ export default {
         bScore:34,
         cScore:15
       },
+      //评级转换图标
+      iconLevel:"",
     }
   },
   methods:{
@@ -68,22 +70,23 @@ export default {
             // 对score的处理
             // this.levelList[(this.params.page-1)*this.params.size+index]
             if (this.descriptionsConfigs[this.params.page-1][i].score>=this.level.sScore){
-              console.log(1)
               this.descriptionsConfigs[this.params.page-1][i].level='S'
+              this.iconLevel='iconfont icon-S_square_solid'
             }else if(this.descriptionsConfigs[this.params.page-1][i].score<this.level.sScore&&this.descriptionsConfigs[this.params.page-1][i].score>=this.level.aScore){
-              console.log(2)
               this.descriptionsConfigs[this.params.page-1][i].level='A'
+              this.iconLevel='iconfont icon-A_square_solid_4472c4'
             }else if(this.descriptionsConfigs[this.params.page-1][i].score<this.level.aScore&&this.descriptionsConfigs[this.params.page-1][i].score>=this.level.bScore){
-              console.log(3)
               this.descriptionsConfigs[this.params.page-1][i].level='B'
+              this.iconLevel='iconfont icon-B_round_solid'
             }else if(this.descriptionsConfigs[this.params.page-1][i].score<this.level.bScore&&this.descriptionsConfigs[this.params.page-1][i].score>=this.level.cScore){
-              console.log(4)
               this.descriptionsConfigs[this.params.page-1][i].level='C'
+              this.iconLevel='iconfont icon-C_square_solid'
             }else if (this.descriptionsConfigs[this.params.page-1][i].score===null){
-              console.log(5)
               this.descriptionsConfigs[this.params.page-1][i].level='N/A'
+              this.iconLevel='iconfont icon-999-weizhi'
             }else {
               this.descriptionsConfigs[this.params.page-1][i].level='N/A'
+              this.iconLevel='iconfont icon-999-weizhi'
             }
           }
         }

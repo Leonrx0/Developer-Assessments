@@ -83,8 +83,8 @@ export default {
 .dBOX{
   height: 600px;
   width: 900px;
-  margin-left: 120px;
-  margin-top: 50px;
+  margin-left: 20px;
+  //margin-top: 10px;
   box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
   .default{
     margin-left: 20px;
