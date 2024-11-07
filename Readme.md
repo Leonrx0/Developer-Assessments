@@ -33,6 +33,8 @@ GitGuru一个分析评估Github上用户数据并具有一定搜索操作的应�
 # 三、功能演示
 
 ## 3.1 整体演示
+- 利用Xxl-Job定时更新用户技术得分：https://www.bilibili.com/video/BV1HoDSY1EBR/?vd_source=028657a849e866c70dc5d4bc19b98741
+- GitGuru前端展示部分：https://www.bilibili.com/video/BV1wdDSYjEVB/?vd_source=87f3da7c5a6a611dc4cd4f324df29ee8
 ## 3.2 功能模块演示
 ### 3.2.1 用户登录注册
 - 当用户输入登录信息后点击登录按钮，系统将与数据库中登录的用户信息对比，进行验证。
