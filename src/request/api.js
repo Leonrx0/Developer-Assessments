@@ -87,3 +87,12 @@ export function getEchartsData(data) {
         data
     });
 }
+
+// 柱状图数据接口
+export function getUserInfoNum(data) {
+    return service({
+        url: "/start/gUser/getUserInfo",
+        method: "POST",
+        data
+    });
+}

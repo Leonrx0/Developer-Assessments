@@ -1,11 +1,13 @@
 <template>
-  <div class="container">
+  <div class="addBox">
+    <div class="container">
       <div class="add-input">
         <el-input v-model="this.params.login" placeholder="Please input user's login" style="width: 500px"></el-input>
       </div>
       <div class="add-button">
         <el-button @click="addByLogin">提交</el-button>
       </div>
+    </div>
   </div>
 </template>
 
@@ -47,16 +49,20 @@ export default {
 <style>
 .container{
   width: 600px;
-  height: 32px;
-  margin-left: 10px;
+  height: 400px;
+  margin-left: 30px;
   margin-top: 10px;
   display: flex;
   .add-input{
+    height: 40px;
     display: flex;
   }
   .add-button{
     margin-left: 20px;
+    margin-top: 4px;
     display: flex;
   }
+
 }
+
 </style>

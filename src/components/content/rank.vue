@@ -8,6 +8,7 @@
         @current-change="handlePageChange"
     />
     <el-descriptions class="description" direction="vertical" border v-for="(item,index) in descriptionsConfigs[this.params.page-1]" :key="index" :title="'No.'+(this.params.size*(this.params.page-1)+index+1)" >
+      <el-descriptions-item label="Photo" width="250px"><img :src="item.avatar_url" alt=""></el-descriptions-item>
       <el-descriptions-item label="UserName" width="250px">{{item.name}}</el-descriptions-item>
       <el-descriptions-item label="EMail" width="250px">{{item.email}}</el-descriptions-item>
       <el-descriptions-item label="Github" width="250px">{{item.html_url}}</el-descriptions-item>
@@ -139,11 +140,10 @@ export default {
     // 获取数据并且存储
     getInfo() {
       console.log("开始调用")
-      console.log((this.params))
       getRankList(this.params).then(res => {
         this.descriptionsConfigs.push(res.data)
-        // console.log("descriptionsConfigs为：")
-        // console.log(this.descriptionsConfigs[this.params.page-1])
+        console.log("descriptionsConfigs为：")
+        console.log(this.descriptionsConfigs[this.params.page-1])
         for (let i = 0; i < 10; i++) {
           if (this.descriptionsConfigs[0][i].location === null) {
             this.IsPredicted = true
@@ -298,7 +298,10 @@ export default {
 .rankBox{
   margin-left: 30px;
   .description{
-    margin-bottom: 10px;
+    img {
+      width: 80px
+    };
+    margin-bottom: 20px;
     .nation{
       display: inline;
     }
