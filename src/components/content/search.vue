@@ -2,7 +2,7 @@
   <div class="rankBox">
     <div  class="card-input">
       <input v-model="params.key"  placeholder="Please input Keywords" class="input"/>
-      <div class="button" @click="keySearch">
+      <div class="button" @click="keySearch(this.params.key)">
         <div class="sousuo">
           <i class="iconfont icon-sousuo"></i>
         </div>
@@ -16,18 +16,19 @@
           v-model:current-page="this.params.page"
           @current-change="handlePageChange"
       />
-      <el-descriptions class="description" direction="vertical" border v-for="(item,index) in descriptionsConfigs[this.params.page-1]" :key="index" :title="'No.'+(index+1)" >
-        <el-descriptions-item label="UserName" width="250px">{{item.name}}</el-descriptions-item>
+      <el-descriptions class="description" direction="vertical" border v-for="(item,index) in descriptionsConfigsKey[this.searchNum-1]" :key="index" :title="'No.'+(index+1)" >
+        <el-descriptions-item label="Photo" width="250px"><img :src="item.avatar_url" alt=""></el-descriptions-item>
+        <el-descriptions-item label="UserName" width="250px"><span v-html="item.name"></span></el-descriptions-item>
         <el-descriptions-item label="EMail" width="250px">{{item.email}}</el-descriptions-item>
         <el-descriptions-item label="Github" width="250px">{{item.html_url}}</el-descriptions-item>
         <el-descriptions-item label="Level" width="250px"><i :class="this.iconLevel" style="font-size: 30px"></i></el-descriptions-item>
         <el-descriptions-item label="Nation" width="250px">
-          <div v-if="item.location!==null">{{item.location}}</div>
+          <span v-if="item.location!==null" v-html="item.location"></span>
           <el-button v-else @click="predictByNull(index)">
             预测
           </el-button>
         </el-descriptions-item>
-        <el-descriptions-item label="Field" width="250px">{{item.topic}}</el-descriptions-item>
+        <el-descriptions-item label="Field" width="250px"><span v-html="item.topic"></span></el-descriptions-item>
       </el-descriptions>
     </div>
   </div>
@@ -49,7 +50,8 @@ export default {
         key:''
       },
       // 存储请求的数据
-      descriptionsConfigs: [],
+      descriptionsConfigsKey: [],
+      searchNum:0,
       // 存储得分与等级的转换
       level:{
         sScore:358,
@@ -62,37 +64,39 @@ export default {
     }
   },
   methods:{
-    keySearch(){
+    keySearch(login){
+      if(login!==''){
+        this.searchNum++
+      }
       searchByKey(this.params).then(res=>{
         if (res.code===200){
-          this.descriptionsConfigs.push(res.data)
-          for (let i = 0; i < this.descriptionsConfigs[0].length; i++) {
+          this.descriptionsConfigsKey.push(res.data)
+          console.log(this.descriptionsConfigsKey)
+          for (let i = 0; i < this.descriptionsConfigsKey[this.params.page-1].length; i++) {
             // 对score的处理
             // this.levelList[(this.params.page-1)*this.params.size+index]
-            if (this.descriptionsConfigs[this.params.page-1][i].score>=this.level.sScore){
-              this.descriptionsConfigs[this.params.page-1][i].level='S'
+            if (this.descriptionsConfigsKey[this.searchNum-1][i].score>=this.level.sScore){
+              this.descriptionsConfigsKey[this.searchNum-1][i].level='S'
               this.iconLevel='iconfont icon-S_square_solid'
-            }else if(this.descriptionsConfigs[this.params.page-1][i].score<this.level.sScore&&this.descriptionsConfigs[this.params.page-1][i].score>=this.level.aScore){
-              this.descriptionsConfigs[this.params.page-1][i].level='A'
+            }else if(this.descriptionsConfigsKey[this.searchNum-1][i].score<this.level.sScore&&this.descriptionsConfigsKey[this.searchNum-1][i].score>=this.level.aScore){
+              this.descriptionsConfigsKey[this.searchNum-1][i].level='A'
               this.iconLevel='iconfont icon-A_square_solid_4472c4'
-            }else if(this.descriptionsConfigs[this.params.page-1][i].score<this.level.aScore&&this.descriptionsConfigs[this.params.page-1][i].score>=this.level.bScore){
-              this.descriptionsConfigs[this.params.page-1][i].level='B'
+            }else if(this.descriptionsConfigsKey[this.searchNum-1][i].score<this.level.aScore&&this.descriptionsConfigsKey[this.searchNum-1][i].score>=this.level.bScore){
+              this.descriptionsConfigsKey[this.searchNum-1][i].level='B'
               this.iconLevel='iconfont icon-B_round_solid'
-            }else if(this.descriptionsConfigs[this.params.page-1][i].score<this.level.bScore&&this.descriptionsConfigs[this.params.page-1][i].score>=this.level.cScore){
-              this.descriptionsConfigs[this.params.page-1][i].level='C'
+            }else if(this.descriptionsConfigsKey[this.searchNum-1][i].score<this.level.bScore&&this.descriptionsConfigsKey[this.searchNum-1][i].score>=this.level.cScore){
+              this.descriptionsConfigsKey[this.searchNum-1][i].level='C'
               this.iconLevel='iconfont icon-C_square_solid'
-            }else if (this.descriptionsConfigs[this.params.page-1][i].score===null){
-              this.descriptionsConfigs[this.params.page-1][i].level='N/A'
+            }else if (this.descriptionsConfigsKey[this.searchNum-1][i].score===null){
+              this.descriptionsConfigsKey[this.searchNum-1][i].level='N/A'
               this.iconLevel='iconfont icon-999-weizhi'
             }else {
-              this.descriptionsConfigs[this.params.page-1][i].level='N/A'
+              this.descriptionsConfigsKey[this.searchNum-1][i].level='N/A'
               this.iconLevel='iconfont icon-999-weizhi'
             }
           }
         }
-
       })
-
     },
     handlePageChange (newPage) {
       this.params.page=newPage
@@ -108,7 +112,7 @@ export default {
   margin-left: 30px;
   .card-input {
     display: flex;
-    height: 40px;
+    height: 5px;
     width:400px;
     border-radius: 25px;
     .input{
@@ -133,7 +137,6 @@ export default {
     }
   }
   .content{
-    margin-top: 20px;
   }
 }
 </style>

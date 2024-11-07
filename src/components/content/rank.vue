@@ -18,13 +18,10 @@
         <el-button v-else @click="predictByNull(index)">
           预测
         </el-button>
-        <el-dialog v-if="ShowDialog" class="predDialog" :before-close="handleClose">
-          <div class="Text">
-            <pre>
+        <el-dialog v-model="ShowDialog"  :before-close="handleClose">
+            <pre class="pre-content">
               {{this.predNation}}
             </pre>
-          </div>
-
         </el-dialog>
       </el-descriptions-item>
       <el-descriptions-item label="Field" width="250px">{{item.topic}}</el-descriptions-item>
@@ -172,19 +169,15 @@ export default {
     },
     predictByNull(index) {
       //获得对应的username
-      this.preName.login=this.descriptionsConfigs[0][index].login
-      console.log(this.descriptionsConfigs[0][index].userLocation)
+      this.preName.login=this.descriptionsConfigs[this.params.page-1][index].login
+      console.log(this.preName.login)
+      console.log(this.descriptionsConfigs[this.params.page-1][index].userLocations)
       predictByName(this.preName).then(res => {
         if (res.code === 200) {
               if (res.data.userLocations!=='N/A'){
                 this.predNation=res.data.userLocations
                 this.ShowDialog=true
-                // ElMessageBox.alert(res.data.userLocations, '预测', {
-                //   confirmButtonText: '确定',
-                //   callback: action => {
-                //     console.log(action);
-                //   }
-                // });
+                console.log(this.predNation)
               }
               else{
                 ElMessageBox.alert("当前数据量不足，预测可信度不高", '预测', {
@@ -302,15 +295,9 @@ export default {
       width: 80px
     };
     margin-bottom: 20px;
-    .nation{
-      display: inline;
-    }
-    .predDialog{
-      .Text{
-        --el-dialog-width: 90%;
-        word-break: break-all;
-        word-wrap: break-word;
-      }
+    .pre-content{
+      height: 300px;
+      overflow: scroll;
     }
   }
 }
@@ -334,14 +321,7 @@ export default {
     margin-top: 50px;
   }
 }
-
-.descriptionTest{
-  .predDialogTest{
-    --el-dialog-width: 90%;
-    word-break: break-all;
-    word-wrap: break-word;
-  }
+.el-dialog__wrapper {
+  background-color: rgba(0, 0, 0, 0.5); /* 半透明黑色背景 */
 }
-
-/* // photo: "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png", */
 </style>
