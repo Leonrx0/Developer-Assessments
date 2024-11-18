@@ -34,6 +34,7 @@
         <h3>我们通过用户的score得分来进行用户排名</h3>
         <h4>1.对用户的UserName，Nation，Field，Email，Github_url进行展示和介绍</h4>
         <h4>2.预测结果，若返回结果为N/A，说明置信度不高，不可作为推断依据，如果置信度够高，那么将会返回预测的用户所在地，并给出推断理由</h4>
+        <h4>3.统计各分段用户的数量</h4>
       </el-card>
     </div>
     <div ref="chart" class="echarts" style="width: 400px; height: 400px;"></div>
@@ -309,7 +310,7 @@ export default {
     display: flex;
     margin-left: 100px;
     margin-top: 30px;
-    height: 300px;
+    height: 350px;
     width: 400px;
     .rules-card{
       height: 100%;
