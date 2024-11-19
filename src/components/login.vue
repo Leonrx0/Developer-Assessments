@@ -105,8 +105,11 @@ export default {
       IsShow:false,
       IsShow1:false,
       IsShow2:false,
+      isFinish:false,
+
 
       isActive:true
+
       // 注册时输入规则
       // rules :{
       //   username: [
@@ -123,10 +126,9 @@ export default {
     }
   },
   mounted() {
-
     this.writeText();
-  },
 
+  },
   methods:{
     handleLogin(){
       console.log(this.loginForm)
@@ -176,17 +178,27 @@ export default {
       }
     },
     writeText() {
-      document.getElementById('text').innerText = this.text.slice(0, this.count);
-      console.log(this.text.slice(0, this.count))
-      this.count++;
+      if(this.count<this.text.length){
+        document.getElementById('text').innerText = this.text.slice(0, this.count);
+        console.log(this.text.slice(0, this.count))
+        this.count++;
+        if (this.count===this.text.length){
+          this.isFinish = true;
+        }
+        if(this.isFinish===true){
+          this.IsShow = true;
+          console.log(this.IsShow)
+          setTimeout(()=>{this.IsShow1 = true;},1500)
+          setTimeout(()=>{this.IsShow2 = true;},3000)
+        }
+        setTimeout(this.writeText, this.speed);
+      }
+
       // 循环播报
       // if (this.count > this.text.length) {
       //   this.count = 1;
       // }
-      setTimeout(this.writeText, this.speed);
-      if (this.count===this.text.length){
-        this.circleShow()
-      }
+
     },
     stretchInfo(){
       this.isActive=!this.isActive;
@@ -244,7 +256,7 @@ export default {
       .fade1-enter-active,
       .fade2-leave-active,
       .fade2-enter-active{
-        transition: opacity 1.5s linear;
+        transition: opacity 1.5s linear 0s;
       }
       .fade-enter-from,
       .fade-leave-to,
@@ -265,7 +277,6 @@ export default {
         margin-top: 10px;
         text-align: center;
         background-color: palevioletred;
-        opacity: 80%;
       }
       .circle1{
         position: absolute;
@@ -290,7 +301,6 @@ export default {
         line-height: 60px;
         font-size: 18px;
         text-align: center;
-        opacity: 80%;
         background-color: darkseagreen;
       }
 
