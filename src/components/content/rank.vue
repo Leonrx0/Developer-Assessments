@@ -95,8 +95,10 @@ export default {
   computed:{
     // 对评级图标进行处理
   },
-  mounted() {
+  beforeMount() {
     this.getInfo()
+  },
+  mounted() {
     // 创建一个 ECharts 实例
     this.chart = echarts.init(this.$refs.chart)
     // 在 ECharts 实例中配置图表
@@ -291,6 +293,7 @@ export default {
 <style>
 .rankBox{
   margin-left: 30px;
+  width: 60%;
   .description{
     img {
       width: 80px
@@ -305,7 +308,7 @@ export default {
 .other-box{
   position: fixed;
   margin-top: 20px;
-  margin-left: 1000px;
+  margin-left: 55%;
   .rules{
     display: flex;
     margin-left: 100px;

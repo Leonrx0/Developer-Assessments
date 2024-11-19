@@ -1,14 +1,10 @@
 <template>
   <div class="rankBox">
-    <div  class="card-input">
-      <input v-model="params.key"  placeholder="Please input Keywords" class="input"/>
-      <div class="button" @click="keySearch(this.params.key)">
-        <div class="sousuo">
-          <i class="iconfont icon-sousuo"></i>
-        </div>
-      </div>
-    </div>
-    <div class="content">
+      <el-input v-model="params.key"  placeholder="Please input Keywords" class="input">
+        <template #suffix>
+          <el-icon class="el-input__icon" @click="keySearch(this.params.key)"><Search /></el-icon>
+        </template>
+      </el-input>
       <el-pagination
           layout="prev, pager, next, jumper, total"
           :page-size="this.params.size"
@@ -30,7 +26,6 @@
         </el-descriptions-item>
         <el-descriptions-item label="Field" width="250px"><span v-html="item.topic"></span></el-descriptions-item>
       </el-descriptions>
-    </div>
   </div>
 </template>
 
@@ -38,9 +33,16 @@
 
 import {searchByKey} from '@/request/api'
 import "@/assets/iconfont/icon/iconfont.css"
+import { Search } from '@element-plus/icons-vue'
 
 export default {
   name: 'mSearch',
+  components: {Search},
+  computed: {
+    Search() {
+      return Search
+    }
+  },
   data() {
     return {
       // 分页功能
@@ -110,33 +112,30 @@ export default {
 <style>
 .rankBox {
   margin-left: 30px;
-  .card-input {
-    display: flex;
-    height: 5px;
-    width:400px;
-    border-radius: 25px;
     .input{
-      display: flex;
-      border-radius: 25px 0 0 25px;
+      width: 600px;
       height: 40px;
-      width: 400px;
-      border: 1px solid #000;
-      border-right-style:none ;
-    }
-    .button{
-      display: flex;
-      height: 42px;
-      width: 50px;
-      background-color: #409eff;
-      border-radius: 0 25px 25px 0;
-      border: 1px solid #000;
-      .sousuo{
-        margin-left: 8px;
-        margin-top: 10px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      border-radius: 80%;
+      .el-input__icon:hover{
+        cursor: pointer;
+        font-size: 20px;
+        color: black;
       }
     }
-  }
-  .content{
+  .input:hover{
+    width: 600px;
+    height: 40px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 80%;
+    box-shadow: rgba(0, 0, 0, 0.16) 0 3px 6px;
+    .el-input__icon:hover{
+      cursor: pointer;
+      font-size: 20px;
+      color: black;
+    }
   }
 }
 </style>

@@ -17,7 +17,7 @@
             </el-button>
           </div>
         </div>
-        <div class="content">
+        <div class="contentInfo">
           <h1>这是一个基于Github上的用户数据制作的一个数据分析网站，以下是功能介绍:</h1>
           <h2>1.技术排名:</h2>
           <h3>&nbsp;&nbsp;&nbsp;&nbsp;我们通过用户的score得分来进行用户排名</h3>
@@ -84,7 +84,6 @@ export default {
   height: 600px;
   width: 900px;
   margin-left: 20px;
-  //margin-top: 10px;
   box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
   .default{
     margin-left: 20px;
@@ -106,8 +105,8 @@ export default {
         display: flex;
       }
     }
-    .content{
-      margin-top: 10px;
+    .contentInfo{
+
     }
   }
 }
