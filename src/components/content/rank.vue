@@ -18,14 +18,14 @@
         <el-button v-else @click="predictByNull(index)">
           预测
         </el-button>
-        <el-dialog v-model="ShowDialog"  :before-close="handleClose">
-            <pre class="pre-content">
-              {{this.predNation}}
-            </pre>
-        </el-dialog>
       </el-descriptions-item>
       <el-descriptions-item label="Field" width="250px">{{item.topic}}</el-descriptions-item>
     </el-descriptions>
+    <el-drawer v-model="ShowDialog" :modal=true title="I am the title" :with-header="false" direction="btt" style="z-index: 9999;font-size: 18px">
+          <pre class="pre-content">
+              {{this.newStr}}
+          </pre>
+    </el-drawer>
   </div>
   <div class="other-box">
     <div class="rules">
@@ -44,7 +44,7 @@
 <script >
 
 import {getRankList, predictByName, classifyLever, getEchartsData} from '@/request/api'
-import { ElMessageBox } from 'element-plus'
+import {ElMessage, ElMessageBox} from 'element-plus'
 import * as echarts from 'echarts'
 export default {
   name: 'mRank',
@@ -89,13 +89,19 @@ export default {
       //评级转换图标
       iconLevel:"",
 
+      // 正则表达式
+      punctuationRegex:/[。:]/g,
+      strArray:[],
+      newStr:'',
+
+
 
     };
   },
   computed:{
     // 对评级图标进行处理
   },
-  beforeMount() {
+  created() {
     this.getInfo()
   },
   mounted() {
@@ -172,6 +178,12 @@ export default {
     },
     predictByNull(index) {
       //获得对应的username
+      ElMessage({
+        showClose: true,
+        type:"success",
+        message: '正在预测，这个过程可能需要等待几分钟······',
+        duration: 7000,
+      })
       this.preName.login=this.descriptionsConfigs[this.params.page-1][index].login
       console.log(this.preName.login)
       console.log(this.descriptionsConfigs[this.params.page-1][index].userLocations)
@@ -179,8 +191,12 @@ export default {
         if (res.code === 200) {
               if (res.data.userLocations!=='N/A'){
                 this.predNation=res.data.userLocations
+                this.strArray = this.predNation.split(this.punctuationRegex);
+                console.log(this.strArray)
+                // 使用 join 方法将数组元素重新组合成一个字符串，每个元素之间插入换行符
+                this.newStr = this.strArray.join('\n').replace("推断理由：",'');
                 this.ShowDialog=true
-                console.log(this.predNation)
+                console.log(this.newStr)
               }
               else{
                 ElMessageBox.alert("当前数据量不足，预测可信度不高", '预测', {
@@ -195,6 +211,7 @@ export default {
       })
 
     },
+
     handlePageChange (newPage) {
       // console.log('当前页码改变为：', newPage);
       this.params.page=newPage
@@ -202,33 +219,37 @@ export default {
       // console.log("更新------------")
       this.getInfo()
     },
-    predictByNullTest(){
-      console.log(1)
-      predictByName(this.test).then(res => {
-        if (res.code === 200) {
-          if (res.data.userLocations!=='N/A'){
-            this.testNation=res.data.userLocations
-            console.log(this.testNation)
-            this.ShowDialog=true
-            // ElMessageBox.alert(res.data.userLocations, '预测', {
-            //   confirmButtonText: '确定',
-            //   callback: action => {
-            //     console.log(action);
-            //   }
-            // });
-          }
-          else{
-            ElMessageBox.alert("当前数据量不足，预测可信度不高", '预测', {
-              confirmButtonText: '确定',
-              callback: action => {
-                console.log(action);
-              }
-            });
-          }
-          this.preRes=true
-        }
-      })
-    },
+    // predictByNullTest(){
+    //   console.log(1)
+    //   predictByName(this.test).then(res => {
+    //     if (res.code === 200) {
+    //       if (res.data.userLocations!=='N/A'){
+    //         this.testNation=res.data.userLocations
+    //         console.log(this.testNation)
+    //         this.strArray = this.testNation.split(this.punctuationRegex);
+    //         // 使用 join 方法将数组元素重新组合成一个字符串，每个元素之间插入换行符
+    //         this.newStr = this.strArray.join('\n');
+    //         console.log(this.newStr)
+    //         this.ShowDialog=true
+    //         // ElMessageBox.alert(res.data.userLocations, '预测', {
+    //         //   confirmButtonText: '确定',
+    //         //   callback: action => {
+    //         //     console.log(action);
+    //         //   }
+    //         // });
+    //       }
+    //       else{
+    //         ElMessageBox.alert("当前数据量不足，预测可信度不高", '预测', {
+    //           confirmButtonText: '确定',
+    //           callback: action => {
+    //             console.log(action);
+    //           }
+    //         });
+    //       }
+    //       this.preRes=true
+    //     }
+    //   })
+    // },
     handleClose(done) {
       this.$confirm('确认关闭？')
           .then(_ => {
@@ -298,11 +319,18 @@ export default {
     img {
       width: 80px
     };
-    margin-bottom: 20px;
-    .pre-content{
-      height: 300px;
-      overflow: scroll;
+    .progress-bar {
+      height: 2px;
+      background-color: lightskyblue;
+      transition: width 0.5s;
+      margin-top:0;
     }
+    margin-bottom: 20px;
+  }
+  .pre-content{
+    overflow-wrap: break-word;
+    word-break: break-word;
+    height: 300px;
   }
 }
 .other-box{
@@ -325,7 +353,5 @@ export default {
     margin-top: 50px;
   }
 }
-.el-dialog__wrapper {
-  background-color: rgba(0, 0, 0, 0.5); /* 半透明黑色背景 */
-}
+
 </style>

@@ -37,16 +37,78 @@
   <!--    数据分析框-->
   <div class="userTitle"><h3>数据分析</h3></div>
   <el-card class="chartsInfo">
-    <div ref="chart" class="echarts" style="width: 400px; height: 400px;"></div>
+    <div class="chartBox">
+      <div ref="chart" class="echarts" style="width: 400px; height: 400px;display: flex"></div>
+      <div class="scoreBox" >
+        <div class="scoreTitle"><h3>用户得分所处在的阶段是前{{this.percentagePosition}}</h3></div>
+        <div class="score_position">
+          <el-popover
+              :visible=this.positionFlag_N
+              placement="left"
+              :width="200"
+          >
+            <el-avatar :size="50" :src=this.photo />
+            <div style="width: 60px;height: 30px;">{{this.userInfoItem.get('username')}}</div>
+            <template #reference>
+              <div class="N_length">N/A</div>
+            </template>
+          </el-popover>
+          <el-popover
+              :visible=this.positionFlag_C
+              placement="left"
+              :width="200"
+          >
+            <el-avatar :size="50" :src=this.photo />
+            <div style="width: 60px;height: 30px">{{this.userInfoItem.get('username')}}</div>
+            <template #reference>
+              <div class="C_length">C</div>
+            </template>
+          </el-popover>
+          <el-popover
+              :visible=this.positionFlag_B
+              placement="left"
+              :width="200"
+          >
+            <el-avatar :size="50" :src=this.photo />
+            <div style="width: 60px;height: 30px">{{this.userInfoItem.get('username')}}</div>
+            <template #reference>
+              <div class="B_length">B</div>
+            </template>
+          </el-popover>
+          <el-popover
+              :visible=this.positionFlag_A
+              placement="left"
+              :width="200"
+          >
+            <el-avatar :size="50" :src=this.photo />
+            <div style="width: 60px;height: 30px">{{this.userInfoItem.get('username')}}</div>
+            <template #reference>
+              <div class="A_length">A</div>
+            </template>
+          </el-popover>
+          <el-popover
+              :visible=this.positionFlag_S
+              placement="left"
+              :width="90"
+          >
+            <el-avatar :size="70" :src=this.photo style="margin-left: 25px"/>
+            <div style="width: 70px;height: 30px;margin-left: 25px;margin-top: 5px">{{this.userInfoItem.get('username')}}</div>
+            <template #reference>
+              <div class="S_length">S</div>
+            </template>
+          </el-popover>
+        </div>
+      </div>
+    </div>
   </el-card>
 <!--    文档分析框-->
   <div class="userTitle"><h3>技术分析</h3></div>
   <el-card class="readmeInfo">
     <div class="progress-bar" :style="{ width: progress + '%' }"></div>
     <div>
-          <pre class="card-content" v-if="isShow===true">
-            {{this.text}}
-          </pre>
+      <pre class="card-content" v-if="isShow===true">
+        {{this.text}}
+      </pre>
       <div v-else>
         <h3 v-if="!isShowText">用户的Readme文档分析</h3>
         <h3 v-else>用户的Readme文档正在分析中，这个过程可能需要一段时间，请稍等······</h3>
@@ -92,7 +154,21 @@ export default {
       entriesNum:[],
       // 用户信息
       userInfoItem:new Map(),
-      photo:''
+      photo:'',
+      // 数据统计位置显示
+      level:{
+        sScore:358,
+        aScore:110,
+        bScore:34,
+        cScore:15
+      },
+      userPosition:'',
+      positionFlag_N:false,
+      positionFlag_C:false,
+      positionFlag_B:false,
+      positionFlag_A:false,
+      positionFlag_S:false,
+      percentagePosition:'N/A'
     }
   },
   mounted() {
@@ -115,13 +191,17 @@ export default {
         if (res.code===200){
           console.log("用户数据")
           console.log(res.data)
+          // 得分位置
+          this.judgePosition(res.data.score)
           // 用户数据
-          // this.userInfoItem.set('avatarUrl',res.data.avatarUrl)
           this.photo = res.data.avatarUrl
           this.userInfoItem.set('email',res.data.email)
           this.userInfoItem.set('score',res.data.score)
           this.userInfoItem.set('location',res.data.location)
           this.userInfoItem.set('username',res.data.name)
+          if (this.userInfoItem.get('username')===''){
+            this.userInfoItem.set('username','用户未填写')
+          }
           console.log(this.userInfoItem)
           // 统计图数据
           this.entriesNumList.push(res.data.publicRepos)
@@ -156,7 +236,10 @@ export default {
           this.isShow=true
           this.stopProgressBar();
           console.log(res.data)
-          this.text=res.data
+          this.text = res.data.replace(/\*/g, '')
+          console.log("改变之后的为：")
+          console.log(this.text)
+
           // this.changeRow()
         }
       }).catch(error => {
@@ -232,6 +315,30 @@ export default {
           }
         ]
       }
+    },
+    // 判断分数并给位置
+    judgePosition(data){
+      if (data>=this.level.sScore){
+        this.userPosition='S'
+        this.percentagePosition='1%'
+        this.positionFlag_S=true
+      }else if(data.score<this.level.sScore&&data>=this.level.aScore){
+        this.userPosition='A'
+        this.percentagePosition='10%'
+        this.positionFlag_A=true
+      }else if(data.score<this.level.aScore&&data>=this.level.bScore){
+        this.userPosition='B'
+        this.percentagePosition='30%'
+        this.positionFlag_B=true
+      }else if(data.score<this.level.bScore&&data>=this.level.cScore){
+        this.userPosition='C'
+        this.percentagePosition='70%'
+        this.positionFlag_C=true
+      }else {
+        this.userPosition='N/A'
+        this.percentagePosition='70%以后'
+        this.positionFlag_N=true
+      }
     }
   },
 }
@@ -259,7 +366,6 @@ export default {
     margin-left: 20px;
     width: 70%;
     height: 500px;
-    overflow: scroll;
     .progress-bar {
       height: 2px;
       background-color: lightskyblue;
@@ -287,8 +393,114 @@ export default {
     width: 70%;
     margin-top: 10px;
     margin-left: 20px;
-    background-color: red;
+    .chartBox{
+      width: 100%;
+      display: flex;
+      .scoreBox{
+        width: 50%;
+        height: 400px;
+        margin-left: 200px;
+        .scoreTitle{
+          font-size: 20px;
 
+        }
+        .score_position{
+          width: 100%;
+          margin-top:10%;
+          margin-left: 10%;
+          height: 30px;
+          /*display: flex;*/
+          color: white;
+          .N_length{
+            width: 25%;
+            line-height: 40px;
+            text-align: center;
+            font-size: 18px;
+            height:40px;
+            background-color: #D8BFD8;
+          }
+          .N_length:hover{
+            width: 25%;
+            font-size: 22px;
+            line-height: 40px;
+            text-align: center;
+            height:40px;
+            background-color: #D8BFD8;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+          }
+
+          .C_length{
+            width: 35%;
+            height:40px;
+            font-size: 18px;
+            line-height: 40px;
+            text-align: center;
+            background-color: #BA55D3;
+          }
+          .C_length:hover{
+            width: 35%;
+            height:40px;
+            font-size: 22px;
+            line-height: 40px;
+            text-align: center;
+            background-color: #BA55D3;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+          }
+          .B_length{
+            width: 20%;
+            height:40px;
+            font-size: 18px;
+            line-height: 40px;
+            text-align: center;
+            background-color: #9932CC;
+          }
+          .B_length:hover{
+            width: 20%;
+            height:40px;
+            font-size: 22px;
+            line-height: 40px;
+            text-align: center;
+            background-color: #9932CC;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+           }
+          .A_length{
+            width: 14%;
+            height:40px;
+            font-size: 18px;
+            line-height: 40px;
+            text-align: center;
+            background-color: #9400D3;
+          }
+          .A_length:hover{
+            width: 14%;
+            height:40px;
+            font-size: 22px;
+            line-height: 40px;
+            text-align: center;
+            background-color: #9400D3;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+          }
+          .S_length{
+            width: 6%;
+            height:40px;
+            font-size: 18px;
+            line-height: 40px;
+            text-align: center;
+            background-color: #800080;
+          }
+          .S_length:hover{
+            width: 6%;
+            height:40px;
+            font-size: 22px;
+            line-height: 40px;
+            text-align: center;
+            background-color: #800080;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+          }
+        }
+      }
+
+    }
   }
   .userTitle{
     margin-left: 20px;

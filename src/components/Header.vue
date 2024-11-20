@@ -17,7 +17,7 @@ export default {
   
 <style>
 .header{
-  z-index: 9999;
+  z-index: 999;
   position: fixed;
   background-color: white;
   font-size: 20px;
