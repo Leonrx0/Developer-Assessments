@@ -96,3 +96,12 @@ export function getUserInfoNum(data) {
         data
     });
 }
+
+// 获取用户的仓库信息
+export function getUserRepo(data) {
+    return service({
+        url: "/start/gUser/getRepo",
+        method: "POST",
+        data
+    });
+}

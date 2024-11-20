@@ -1,124 +1,144 @@
 <template>
-<!--    输入框-->
-  <div class="card-input">
-    <el-input v-model="params.login"  placeholder="Please input user's login" class="input">
-      <template #suffix>
-        <el-icon class="el-input__icon" @click="predictByInput"><Search /></el-icon>
-      </template>
-    </el-input>
-  </div>
-<!--    用户信息框-->
-  <el-card class="userInfo">
-    <el-descriptions
-        title="用户信息"
-        direction="vertical"
-        border
-        style="margin-top: 10px"
-    >
-      <el-descriptions-item
-          :rowspan="2"
-          :width="140"
-          label="Photo"
-          align="center"
-      >
-        <el-image
-            style="width: 100px; height: 100px"
-            :src=this.photo
-        />
-      </el-descriptions-item>
-      <el-descriptions-item label="Username">{{this.userInfoItem.get('username')}}</el-descriptions-item>
-      <el-descriptions-item label="Email">{{this.userInfoItem.get('email')}}</el-descriptions-item>
-      <el-descriptions-item label="Score">{{this.userInfoItem.get('score')}}</el-descriptions-item>
-      <el-descriptions-item label="Address">
-        {{this.userInfoItem.get('location')}}
-      </el-descriptions-item>
-    </el-descriptions>
-  </el-card>
-  <!--    数据分析框-->
-  <div class="userTitle"><h3>数据分析</h3></div>
-  <el-card class="chartsInfo">
-    <div class="chartBox">
-      <div ref="chart" class="echarts" style="width: 400px; height: 400px;display: flex"></div>
-      <div class="scoreBox" >
-        <div class="scoreTitle"><h3>用户得分所处在的阶段是前{{this.percentagePosition}}</h3></div>
-        <div class="score_position">
-          <el-popover
-              :visible=this.positionFlag_N
-              placement="left"
-              :width="200"
-          >
-            <el-avatar :size="50" :src=this.photo />
-            <div style="width: 60px;height: 30px;">{{this.userInfoItem.get('username')}}</div>
-            <template #reference>
-              <div class="N_length">N/A</div>
-            </template>
-          </el-popover>
-          <el-popover
-              :visible=this.positionFlag_C
-              placement="left"
-              :width="200"
-          >
-            <el-avatar :size="50" :src=this.photo />
-            <div style="width: 60px;height: 30px">{{this.userInfoItem.get('username')}}</div>
-            <template #reference>
-              <div class="C_length">C</div>
-            </template>
-          </el-popover>
-          <el-popover
-              :visible=this.positionFlag_B
-              placement="left"
-              :width="200"
-          >
-            <el-avatar :size="50" :src=this.photo />
-            <div style="width: 60px;height: 30px">{{this.userInfoItem.get('username')}}</div>
-            <template #reference>
-              <div class="B_length">B</div>
-            </template>
-          </el-popover>
-          <el-popover
-              :visible=this.positionFlag_A
-              placement="left"
-              :width="200"
-          >
-            <el-avatar :size="50" :src=this.photo />
-            <div style="width: 60px;height: 30px">{{this.userInfoItem.get('username')}}</div>
-            <template #reference>
-              <div class="A_length">A</div>
-            </template>
-          </el-popover>
-          <el-popover
-              :visible=this.positionFlag_S
-              placement="left"
-              :width="90"
-          >
-            <el-avatar :size="70" :src=this.photo style="margin-left: 25px"/>
-            <div style="width: 70px;height: 30px;margin-left: 25px;margin-top: 5px">{{this.userInfoItem.get('username')}}</div>
-            <template #reference>
-              <div class="S_length">S</div>
-            </template>
-          </el-popover>
-        </div>
+  <div class="all" style="display: flex">
+    <div class="left" style="width: 70%;height: 100%;">
+      <!--    输入框-->
+      <div class="card-input">
+        <el-input v-model="params.login"  placeholder="Please input user's login" class="input">
+          <template #suffix>
+            <el-icon class="el-input__icon" @click="predictByInput"><Search /></el-icon>
+          </template>
+        </el-input>
       </div>
-    </div>
-  </el-card>
-<!--    文档分析框-->
-  <div class="userTitle"><h3>技术分析</h3></div>
-  <el-card class="readmeInfo">
-    <div class="progress-bar" :style="{ width: progress + '%' }"></div>
-    <div>
+      <!--    用户信息框-->
+      <el-card class="userInfo">
+        <el-descriptions
+            title="用户信息"
+            direction="vertical"
+            border
+            style="margin-top: 10px"
+        >
+          <el-descriptions-item
+              :rowspan="2"
+              :width="140"
+              label="Photo"
+              align="center"
+          >
+            <el-image
+                style="width: 100px; height: 100px"
+                :src=this.photo
+            />
+          </el-descriptions-item>
+          <el-descriptions-item label="Username">{{this.userInfoItem.get('username')}}</el-descriptions-item>
+          <el-descriptions-item label="Email">{{this.userInfoItem.get('email')}}</el-descriptions-item>
+          <el-descriptions-item label="Score">{{this.userInfoItem.get('score')}}</el-descriptions-item>
+          <el-descriptions-item label="Address">
+            {{this.userInfoItem.get('location')}}
+          </el-descriptions-item>
+        </el-descriptions>
+      </el-card>
+      <!--    数据分析框-->
+      <div class="userTitle"><h3>数据分析</h3></div>
+      <el-card class="chartsInfo">
+        <div class="chartBox">
+          <div ref="chart" class="echarts" style="width: 500px; height: 400px;"></div>
+          <div class="scoreBox" >
+            <div class="scoreTitle"><h3>用户得分所处在的阶段是前{{this.percentagePosition}}</h3></div>
+            <div class="score_position">
+              <el-popover
+                  :visible=this.positionFlag_N
+                  placement="left"
+                  :width="200"
+              >
+                <el-avatar :size="50" :src=this.photo />
+                <div style="width: 60px;height: 30px;">{{this.userInfoItem.get('username')}}</div>
+                <template #reference>
+                  <div class="N_length">N/A</div>
+                </template>
+              </el-popover>
+              <el-popover
+                  :visible=this.positionFlag_C
+                  placement="left"
+                  :width="200"
+              >
+                <el-avatar :size="50" :src=this.photo />
+                <div style="width: 60px;height: 30px">{{this.userInfoItem.get('username')}}</div>
+                <template #reference>
+                  <div class="C_length">C</div>
+                </template>
+              </el-popover>
+              <el-popover
+                  :visible=this.positionFlag_B
+                  placement="left"
+                  :width="200"
+              >
+                <el-avatar :size="50" :src=this.photo />
+                <div style="width: 60px;height: 30px">{{this.userInfoItem.get('username')}}</div>
+                <template #reference>
+                  <div class="B_length">B</div>
+                </template>
+              </el-popover>
+              <el-popover
+                  :visible=this.positionFlag_A
+                  placement="left"
+                  :width="200"
+              >
+                <el-avatar :size="50" :src=this.photo />
+                <div style="width: 60px;height: 30px">{{this.userInfoItem.get('username')}}</div>
+                <template #reference>
+                  <div class="A_length">A</div>
+                </template>
+              </el-popover>
+              <el-popover
+                  :visible=this.positionFlag_S
+                  placement="left"
+                  :width="90"
+              >
+                <el-avatar :size="70" :src=this.photo style="margin-left: 25px"/>
+                <div style="width: 70px;height: 30px;margin-left: 25px;margin-top: 5px">{{this.userInfoItem.get('username')}}</div>
+                <template #reference>
+                  <div class="S_length">S</div>
+                </template>
+              </el-popover>
+            </div>
+          </div>
+        </div>
+      </el-card>
+      <!--    文档分析框-->
+      <div class="userTitle"><h3>技术分析</h3></div>
+      <el-card class="readmeInfo">
+        <div class="progress-bar" :style="{ width: progress + '%' }"></div>
+        <div>
       <pre class="card-content" v-if="isShow===true">
         {{this.text}}
       </pre>
-      <div v-else>
-        <h3 v-if="!isShowText">用户的Readme文档分析</h3>
-        <h3 v-else>用户的Readme文档正在分析中，这个过程可能需要一段时间，请稍等······</h3>
-      </div>
+          <div v-else>
+            <h3 v-if="!isShowText">用户的Readme文档分析</h3>
+            <h3 v-else>用户的Readme文档正在分析中，这个过程可能需要一段时间，请稍等······</h3>
+          </div>
+        </div>
+      </el-card>
     </div>
-  </el-card>
+    <div class="right" style="width: 30%;height: 100%;margin-top:8%;margin-left: -30px">
+      <el-timeline style="max-width: 600px">
+        <el-timeline-item
+            placement="top"
+            v-for="(item, index) in historyRepoItems"
+            :key="index"
+            :timestamp="item.updateTime">
+          <el-card>
+            <h3>项目名称：<span style="font-size: 13px;font-weight: normal;">{{item.name}}</span></h3>
+            <h3>项目介绍：<span style="font-size: 13px;font-weight: normal;">{{item.description}}</span></h3>
+            <h3>项目地址：<span style="font-size: 13px;font-weight: normal;">{{item.cloneUrl}}</span></h3>
+          </el-card>
+        </el-timeline-item>
+      </el-timeline>
+    </div>
+  </div>
+
 </template>
 
 <script>
-import {getUserInfoNum, selectByName} from "@/request/api.js";
+import {getUserInfoNum, getUserRepo, selectByName} from "@/request/api.js";
 import { Search } from '@element-plus/icons-vue'
 import * as echarts from 'echarts'
 
@@ -168,7 +188,10 @@ export default {
       positionFlag_B:false,
       positionFlag_A:false,
       positionFlag_S:false,
-      percentagePosition:'N/A'
+      percentagePosition:'N/A',
+
+      // 仓库记录
+      historyRepoItems:[]
     }
   },
   mounted() {
@@ -191,6 +214,12 @@ export default {
         if (res.code===200){
           console.log("用户数据")
           console.log(res.data)
+          // getUserRepo(this.params).then((res)=>{
+          //   if (res.code===200){
+          //     console.log(1)
+          //     console.log(res.data)
+          //   }
+          // })
           // 得分位置
           this.judgePosition(res.data.score)
           // 用户数据
@@ -226,6 +255,7 @@ export default {
           }]
         });
       })
+      this.getUserHistoryRepos()
       this.progress = 0;
       // 在这里设置一个异步的进度条setInterval，随着请求的时间，先按步长2来每秒增加进度条，如果请求到了数据，即请求标志位为1了，直接拉满
       this.startProgressBar();
@@ -339,6 +369,28 @@ export default {
         this.percentagePosition='70%以后'
         this.positionFlag_N=true
       }
+    },
+    getUserHistoryRepos(){
+      getUserRepo(this.params).then((res)=>{
+        if (res.code===200){
+          console.log(res.data)
+          for(let i=0;i<6;i++){
+            // 构建数据
+            let reposInfo={
+              name:'',
+              description:'',
+              updateTime:'',
+              cloneUrl:''
+            }
+            reposInfo.name=res.data[i].name
+            reposInfo.description=res.data[i].description
+            reposInfo.updateTime=res.data[i].updatedAt
+            reposInfo.cloneUrl=res.data[i].clone_url
+            this.historyRepoItems.push(reposInfo)
+          }
+          console.log(this.historyRepoItems)
+        }
+      })
     }
   },
 }
@@ -364,7 +416,7 @@ export default {
   .readmeInfo{
     margin-top: 10px;
     margin-left: 20px;
-    width: 70%;
+    width: 90%;
     height: 500px;
     .progress-bar {
       height: 2px;
@@ -386,11 +438,11 @@ export default {
     margin-top: 10px;
     margin-left: 20px;
     background-color: #4caf50;
-    width: 70%;
+    width: 90%;
     height: 300px;
   }
   .chartsInfo{
-    width: 70%;
+    width: 90%;
     margin-top: 10px;
     margin-left: 20px;
     .chartBox{
