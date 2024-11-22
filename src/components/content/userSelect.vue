@@ -118,20 +118,23 @@
         </div>
       </el-card>
     </div>
-    <div class="right" style="width: 30%;height: 100%;margin-top:8%;margin-left: -30px">
-      <el-timeline style="max-width: 600px">
-        <el-timeline-item
-            placement="top"
-            v-for="(item, index) in historyRepoItems"
-            :key="index"
-            :timestamp="item.updateTime">
-          <el-card>
-            <h3>项目名称：<span style="font-size: 13px;font-weight: normal;">{{item.name}}</span></h3>
-            <h3>项目介绍：<span style="font-size: 13px;font-weight: normal;">{{item.description}}</span></h3>
-            <h3>项目地址：<span style="font-size: 13px;font-weight: normal;">{{item.cloneUrl}}</span></h3>
-          </el-card>
-        </el-timeline-item>
-      </el-timeline>
+    <div class="right" style="width: 30%;height: 100%;margin-top:4.5%;margin-left: -30px">
+      <el-card>
+        <div style="margin-bottom: 10px"><h3>项目历程：</h3></div>
+        <el-timeline style="max-width: 600px">
+          <el-timeline-item
+              placement="top"
+              v-for="(item, index) in historyRepoItems_sort[0]"
+              :key="index"
+              :timestamp="item.updateTime">
+            <el-card>
+              <h3>项目名称：<span style="font-size: 13px;font-weight: normal;">{{item.name}}</span></h3>
+              <h3>项目介绍：<span style="font-size: 13px;font-weight: normal;">{{item.description}}</span></h3>
+              <h3>项目地址：<span style="font-size: 13px;font-weight: normal;">{{item.cloneUrl}}</span></h3>
+            </el-card>
+          </el-timeline-item>
+        </el-timeline>
+      </el-card>
     </div>
   </div>
 
@@ -191,7 +194,9 @@ export default {
       percentagePosition:'N/A',
 
       // 仓库记录
-      historyRepoItems:[]
+      historyRepoItems:[],
+      historyRepoItems_sort:[],
+      timeList:[]
     }
   },
   mounted() {
@@ -213,7 +218,7 @@ export default {
       getUserInfoNum(this.params).then(res=> {
         if (res.code===200){
           console.log("用户数据")
-          console.log(res.data)
+          // console.log(res.data)
           // getUserRepo(this.params).then((res)=>{
           //   if (res.code===200){
           //     console.log(1)
@@ -265,10 +270,10 @@ export default {
           this.InfoFlag=1
           this.isShow=true
           this.stopProgressBar();
-          console.log(res.data)
+          // console.log(res.data)
           this.text = res.data.replace(/\*/g, '')
-          console.log("改变之后的为：")
-          console.log(this.text)
+          // console.log("改变之后的为：")
+          // console.log(this.text)
 
           // this.changeRow()
         }
@@ -370,6 +375,23 @@ export default {
         this.positionFlag_N=true
       }
     },
+    // 对时间线进行快排
+    // quickSort(arr) {
+    //   // 选择中间元素作为基准值
+    //   let pivot = arr[Math.floor(arr.length / 2)];
+    //   let left = []; // 存储比基准值大的元素（降序）
+    //   let right = []; // 存储比基准值小或等于的元素（降序）
+    //
+    //   for (let i = 0; i < arr.length; i++) {
+    //     if (i === Math.floor(arr.length / 2)) continue;
+    //     if (arr[i].updatedAt > pivot.updatedAt) {
+    //       left.push(arr[i]); // 比基准值大的元素放入left数组（降序）
+    //     } else {
+    //       right.push(arr[i]); // 比基准值小或等于的元素放入right数组（降序）
+    //     }
+    //   }
+    //   return this.quickSort(left).concat([pivot], this.quickSort(right));
+    // },
     getUserHistoryRepos(){
       getUserRepo(this.params).then((res)=>{
         if (res.code===200){
@@ -388,9 +410,50 @@ export default {
             reposInfo.cloneUrl=res.data[i].clone_url
             this.historyRepoItems.push(reposInfo)
           }
-          console.log(this.historyRepoItems)
+          // 这是冒泡
+          // for (let i = 0; i < 6; i++) {
+          //   // 标志位，用于优化算法，如果在某一趟排序中没有发生交换，则说明数组已经有序，可以提前退出
+          //   let swapped = false;
+          //   for (let j = 0; j < 6 - i; j++) {
+          //     if (this.historyRepoItems[j].updateTime < this.historyRepoItems[j + 1].updateTime) {
+          //       // 交换元素
+          //       [this.historyRepoItems[j], this.historyRepoItems[j + 1]] = [this.historyRepoItems[j + 1], this.historyRepoItems[j]];
+          //       swapped = true;
+          //     }
+          //   }
+          //   // 如果某一趟排序没有发生交换，说明数组已经有序，提前退出
+          //   if (!swapped) {
+          //     break;
+          //   }
+          // }
+          console.log(this.historyRepoItems.length)
+          this.historyRepoItems_sort.push(this.quickSort(this.historyRepoItems))
+          console.log(this.historyRepoItems_sort[0])
         }
       })
+    },
+    quickSort(arr) {
+      console.log("arr:")
+      console.log(arr)
+      // 选择中间元素作为基准值
+      if (arr.length <= 1) {
+        return arr;
+      }
+
+      let pivot = arr[Math.floor(arr.length / 2)];
+      let left = []; // 存储比基准值大的元素（降序）
+      let right = []; // 存储比基准值小或等于的元素（降序）
+
+      for (let i = 0; i < arr.length; i++) {
+        if (i === Math.floor(arr.length / 2)) continue;
+        if (arr[i].updateTime > pivot.updateTime) {
+          left.push(arr[i]); // 比基准值大的元素放入left数组（降序）
+        } else {
+          right.push(arr[i]); // 比基准值小或等于的元素放入right数组（降序）
+        }
+      }
+
+      return this.quickSort(left).concat([pivot], this.quickSort(right));
     }
   },
 }

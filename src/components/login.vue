@@ -98,7 +98,7 @@ export default {
       // 判断注册框是否显示
       visible:false,
       textEl: document.querySelector('#text'),
-      text: "欢迎来到GitRuru数据中心！\n",
+      text: "欢迎来到GitGuru数据中心！\n",
       count: 1,
       speed: 200,
 
